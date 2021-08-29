@@ -10,12 +10,68 @@
 </style>
 <div class="uper">
 
-    <form  action="transaction/index" method="get">
-        <input type="text"  name="project" placeholder="Search by project"/>
-        <input type="text"  name="category" placeholder="Search by category"/>
-        <input type="text"  name="activity" placeholder="Search by activity"/>
-        <input type="text"  name="programe" placeholder="Search by programe"/>
-        <button type="submit">Search</button>
+    <form  action="{{ route('transaction.index')}}" method="get">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Project</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="project">
+                        <option>Select...</option>
+                        @foreach ($projects as $project)
+                             <option value="{{$project->id}}">{{ $project->title }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Category</label>
+
+                    <select class="form-control" id="exampleFormControlSelect1" name="category">
+                        <option>Select...</option>
+                        @foreach ($categorys as $category)
+                             <option value="{{$category->id}}">{{ $category->title }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Activity</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="activity">
+                        <option>Select...</option>
+                        @foreach ($activitys as $activity)
+                             <option value="{{$activity->id}}">{{ $activity->title }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Transaction</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="transaction">
+                        <option>Select...</option>
+                        @foreach ($alltransactions as $transactionf)
+                             <option value="{{$transactionf->id}}">{{ $transactionf->programe }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+            </div>
+
+            <div class="col-sm">
+                <div class="form-group">
+                    <label></label>
+                    <button class="btn btn-primary btn-block filter" type="submit" style="margin-top:7px;">Search</button>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+
     </form>
 
 
@@ -68,5 +124,5 @@
     </tbody>
   </table>
 <div>
-{!! $transactions->links() !!}
+{{-- {!! $transactions->links() !!} --}}
 @endsection

@@ -5,9 +5,20 @@ use App\Http\Requests\TransactionCreateRequest;
 use App\Http\Requests\TransactionUpdateRequest;
 use Illuminate\Http\Request;
 use App\Transaction;
+use App\Project;
+use App\Category;
+use App\Activity;
+use App\Repositories\TransactionRepository;
 
 class TransactionController extends Controller
 {
+
+    private $transaction;
+
+    public function __construct()
+    {
+        $this->transaction = new TransactionRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,18 +26,35 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-      //  dd($request);
+       // dd($request->all());
 
-        $where = [];
-        $filters = [];
+      $where = [];
+      $filters = [];
 
-        if ($request->has('project') && !empty($request->get('project'))) {
-            $where['item_id'] = $request->get('item');
-            $filters['Item'] = $this->item->show($request->get('item'))->name;
-        }
+      if ($request->has('project') && !empty($request->get('project'))) {
+          $where['projects.id'] = $request->get('project');
+      }
+      if ($request->has('category') && !empty($request->get('category'))) {
+          $where['categories.id'] = $request->get('category');
+      }
+      if ($request->has('activity') && !empty($request->get('activity'))) {
+          $where['activities.id'] = $request->get('activity');
+      }
+      if ($request->has('transaction') && !empty($request->get('transaction'))) {
+          $where['transactions.id'] = $request->get('transaction');
+      }
 
-        $transactions = Transaction::paginate(15);
-        return view('transaction.index', compact('transactions'));
+      //$transaction = $this->filteredRecords($where);
+
+        //$transactions = Transaction::paginate(15);
+        $transactions = $this->filteredRecords($where);
+        $projects = Project::all();
+        $categorys = Category::all();
+        $activitys = Activity::all();
+        $alltransactions = Transaction::all();
+       // dd($transactions);
+        return view('transaction.index', compact('transactions','projects','categorys','activitys','alltransactions'));
+      //  return view('transaction.index', ['data' => $transaction, 'filters' => $filters, 'where' => $where]);
     }
 
     /**
@@ -114,5 +142,17 @@ class TransactionController extends Controller
         }
 
         return redirect('/transaction')->with('success', 'transaction is successfully deleted');
+    }
+
+
+    public function submit(Request $request)
+    {
+
+
+    }
+
+    public function filteredRecords($where = [], $groupBy = [])
+    {
+        return $this->transaction->getItems($where, $groupBy);
     }
 }
