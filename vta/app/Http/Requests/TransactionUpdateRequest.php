@@ -24,7 +24,7 @@ class TransactionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'programe' => 'required|max:255',
+            'programe' => 'required|max:1000',
         ];
     }
 }
